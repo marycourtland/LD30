@@ -7,7 +7,7 @@ class bz.Slider extends GameObject
     @arm = rth((params.length || 100), (if params.orientation is 'v' then -Math.PI/2 else 0))
     @graphics.width = 10
     @graphics.color = 'silver'
-    @graphics.handle_width = 50
+    @graphics.handle_width = 30
     @graphics.handle_length = 20
     @graphics.handle_color = 'black'
 
@@ -16,31 +16,36 @@ class bz.Slider extends GameObject
       max: params.max || 1000
 
     @value = params.value || 0
-    @handle_pos = xy(0,0) # this will be set each tick
 
-    @on 'tick', ->
-      # interpolate handle position
+    @draw_params = {}
+
+
+    @recalculate = ->
+      # recalculate things needed for drawing the slider
+      # (doesn't need to be done on every frame)
       fraction = (@value - @scale.min) / (@scale.max - @scale.min)
-      @handle_pos = add @pos, scale(@arm, fraction)
-
+      handle_pos = add @pos, scale(@arm, fraction)
+      @draw_params.endpoint = @endpoint()
+      @draw_params.handle1 = add handle_pos, rth(@graphics.handle_length/2, @arm.th)
+      @draw_params.handle2 = add handle_pos, rth(-@graphics.handle_length/2, @arm.th)
 
     @on 'draw', ->
-      draw.line @ctx, @pos, @endpoint(),
+      draw.line @ctx, @pos, @draw_params.endpoint,
         linewidth: @graphics.width,
         stroke: @graphics.color
 
       # slider handle
-      handle1 = add @handle_pos, rth(@graphics.handle_length/2, @arm.th)
-      handle2 = add @handle_pos, rth(-@graphics.handle_length/2, @arm.th)
-      draw.line @ctx, handle1, handle2,
+      draw.line @ctx, @draw_params.handle1, @draw_params.handle2,
         linewidth: @graphics.handle_width,
         stroke: @graphics.handle_color
 
     @on 'drag', (p) ->
       @value = @getSettingFromPos(p) unless !@contains(@project(p))
+      @recalculate()
 
     @on 'click', (p) ->
       @value = @getSettingFromPos(p)
+      @recalculate()
 
     @endpoint = ->
       add @pos, @arm
@@ -55,3 +60,6 @@ class bz.Slider extends GameObject
 
     @contains = (p) ->
       isOnLineSegment p, @pos, @endpoint(), Math.max(@graphics.width/2, @graphics.handle_width/2)
+
+
+    @recalculate()

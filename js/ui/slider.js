@@ -12,7 +12,7 @@ bz.Slider = (function(_super) {
     this.arm = rth(params.length || 100, (params.orientation === 'v' ? -Math.PI / 2 : 0));
     this.graphics.width = 10;
     this.graphics.color = 'silver';
-    this.graphics.handle_width = 50;
+    this.graphics.handle_width = 30;
     this.graphics.handle_length = 20;
     this.graphics.handle_color = 'black';
     this.scale = {
@@ -20,32 +20,34 @@ bz.Slider = (function(_super) {
       max: params.max || 1000
     };
     this.value = params.value || 0;
-    this.handle_pos = xy(0, 0);
-    this.on('tick', function() {
-      var fraction;
+    this.draw_params = {};
+    this.recalculate = function() {
+      var fraction, handle_pos;
       fraction = (this.value - this.scale.min) / (this.scale.max - this.scale.min);
-      return this.handle_pos = add(this.pos, scale(this.arm, fraction));
-    });
+      handle_pos = add(this.pos, scale(this.arm, fraction));
+      this.draw_params.endpoint = this.endpoint();
+      this.draw_params.handle1 = add(handle_pos, rth(this.graphics.handle_length / 2, this.arm.th));
+      return this.draw_params.handle2 = add(handle_pos, rth(-this.graphics.handle_length / 2, this.arm.th));
+    };
     this.on('draw', function() {
-      var handle1, handle2;
-      draw.line(this.ctx, this.pos, this.endpoint(), {
+      draw.line(this.ctx, this.pos, this.draw_params.endpoint, {
         linewidth: this.graphics.width,
         stroke: this.graphics.color
       });
-      handle1 = add(this.handle_pos, rth(this.graphics.handle_length / 2, this.arm.th));
-      handle2 = add(this.handle_pos, rth(-this.graphics.handle_length / 2, this.arm.th));
-      return draw.line(this.ctx, handle1, handle2, {
+      return draw.line(this.ctx, this.draw_params.handle1, this.draw_params.handle2, {
         linewidth: this.graphics.handle_width,
         stroke: this.graphics.handle_color
       });
     });
     this.on('drag', function(p) {
       if (!!this.contains(this.project(p))) {
-        return this.value = this.getSettingFromPos(p);
+        this.value = this.getSettingFromPos(p);
       }
+      return this.recalculate();
     });
     this.on('click', function(p) {
-      return this.value = this.getSettingFromPos(p);
+      this.value = this.getSettingFromPos(p);
+      return this.recalculate();
     });
     this.endpoint = function() {
       return add(this.pos, this.arm);
@@ -61,6 +63,7 @@ bz.Slider = (function(_super) {
     this.contains = function(p) {
       return isOnLineSegment(p, this.pos, this.endpoint(), Math.max(this.graphics.width / 2, this.graphics.handle_width / 2));
     };
+    this.recalculate();
   }
 
   return Slider;
