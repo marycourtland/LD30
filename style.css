@@ -1,0 +1,17 @@
+body {
+  font-family: 'Coda';
+  color: #fff;
+  background-color: #000;
+}
+
+h1 {
+  text-align: center;
+}
+
+#game_canvas {
+  display: block;
+  border: 1px solid #000;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+}

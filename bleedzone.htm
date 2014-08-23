@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+    <link href='http://fonts.googleapis.com/css?family=Coda' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='style.css'>
     <script type="text/javascript" src = "js/lib/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src = "js/lib/preloadjs-0.3.1.min.js"></script>
     <script type="text/javascript" src = "js/lib/soundjs-NEXT.min.js"></script>
@@ -16,30 +18,26 @@
     <script type="text/javascript" src = "js/object_features/actuate.js"></script>
     <script type="text/javascript" src = "js/object_features/navigate.js"></script>
     <script type="text/javascript" src = "js/object_features/cast_as_character.js"></script>
-    <title>New Game</title>
+    <title>BLEED ZONE</title>
   </head>
   
   <body>
-    <canvas id="game_canvas" style="border:1px solid black; margin-left: 100px !important; background-image:url('images/background.png');"></canvas>
+    <h1>WELCOME TO THE BLEED ZONE</h1>
+    <canvas id="game_canvas"></canvas>
   </body>
   
   <script type="text/javascript">
-    // The game
-    game = new Game();
-    game.setTitle("New game");
+    // The game stuff
+    var game = new Game();
+    game.setTitle("BLEED ZONE");
     game.setSize(xy(600, 400));
     game.setFont({type:'Arial', size:12, color:'white'});
     window.onload = function() {
       game.start();
     }
-    
-    // a turtle
-    turtle = new GameObject(game);
-    turtle.setImage("images/turtle.png", {rotate: true});
-    turtle.placeAt(xy(525, 230));
-    navigate(turtle, keyboard.lrud, 3);
-    castAsCharacter(turtle);
-    
+
+    // The game world (just a namespace for all the big objects)
+    var bz = {};
     
   </script>
 </html>

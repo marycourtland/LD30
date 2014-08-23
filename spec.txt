@@ -1,0 +1,34 @@
+GAME SPEC
+
+Two worlds containing:
+  - Resource levels for each resource
+  - Outputs levels/states
+
+Two resources in each world:
+  - CO2
+  - Water
+
+Two outputs in each world:
+  - Temperature
+  - Political mood
+
+
+Resource dynamics:
+  - Contains rules for computing outputs from resources, etc
+
+Wormhole between the two worlds:
+  - Size
+  - Material flux
+
+Player input: vacuum speed
+  - Controls wormhole flux
+
+Player input: magnet strength
+  - Controls wormhole size
+
+Message notification system
+
+GUI
+
+
+
