@@ -7,17 +7,17 @@
     <script type="text/javascript" src = "js/lib/preloadjs-0.3.1.min.js"></script>
     <script type="text/javascript" src = "js/lib/soundjs-NEXT.min.js"></script>
     <script type="text/javascript" src = "js/lib/underscore-min.js"></script>
-    <script type="text/javascript" src = "js/game.js"></script>
-    <script type="text/javascript" src = "js/math2D.js"></script>
-    <script type="text/javascript" src = "js/drawing.js"></script>
-    <script type="text/javascript" src = "js/colors.js"></script>
-    <script type="text/javascript" src = "js/utility.js"></script>
-    <script type="text/javascript" src = "js/mouse.js"></script>
-    <script type="text/javascript" src = "js/keyboard.js"></script>
-    <script type="text/javascript" src = "js/gameobject.js"></script>
-    <script type="text/javascript" src = "js/object_features/actuate.js"></script>
-    <script type="text/javascript" src = "js/object_features/navigate.js"></script>
-    <script type="text/javascript" src = "js/object_features/cast_as_character.js"></script>
+
+    <!-- game engine things -->
+    <script type="text/javascript" src = "js/engine/game.js"></script>
+    <script type="text/javascript" src = "js/engine/math2D.js"></script>
+    <script type="text/javascript" src = "js/engine/drawing.js"></script>
+    <script type="text/javascript" src = "js/engine/colors.js"></script>
+    <script type="text/javascript" src = "js/engine/utility.js"></script>
+    <script type="text/javascript" src = "js/engine/mouse.js"></script>
+    <script type="text/javascript" src = "js/engine/keyboard.js"></script>
+    <script type="text/javascript" src = "js/engine/gameobject.js"></script>
+    <script type="text/javascript" src = "js/lib/object_features/handle.js"></script>
     <title>BLEED ZONE</title>
   </head>
   
@@ -33,11 +33,24 @@
     game.setSize(xy(600, 400));
     game.setFont({type:'Arial', size:12, color:'white'});
     window.onload = function() {
+      window.s = new bz.Slider(game, {
+        pos: xy(200, 300),
+        length: 200,
+        orientation: 'v'
+      })
       game.start();
     }
 
     // The game world (just a namespace for all the big objects)
     var bz = {};
-    
+
+
   </script>
+
+  <!-- things specific to this game -->
+  <script type="text/javascript" src = "js/world.js"></script>
+  <script type="text/javascript" src = "js/wormhole.js"></script>
+  <script type="text/javascript" src = "js/ui/slider.js"></script>
+
+
 </html>
