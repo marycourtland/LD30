@@ -54,9 +54,6 @@ function Game(params) {
   
   // Game loop
   this.start = function() {
-    this.objects.forEach(function(obj) {
-      if (obj.kind.indexOf('dynamic') == -1) actuate(obj);
-    });
     this.setFont(this.display.font);
     this.next();
   }

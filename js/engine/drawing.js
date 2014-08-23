@@ -116,6 +116,7 @@ var draw = {
   },
 
   marker: function(ctx, pos, params) {
+    if (!params) { params = {} }
     var size = params.size || 2;
     this.circle(ctx, pos, size, params);
   },

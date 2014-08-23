@@ -339,3 +339,21 @@ function doLinesCross(p1, p2, eA, eB) {
 
     return (condition1 && condition2);
 }
+
+// Finds the distance of point p from the line that goes through pos1 and pos2.
+function distanceFromLine(p, pos1, pos2) {
+  var posp1 = subtract(p, pos1);
+  var pos12  = subtract(pos2, pos1);
+  var theta = posp1.th - pos12.th;
+  return Math.abs(posp1.r * Math.sin(theta));
+}
+
+// Determines whether the point p lies on the line segment from pos1 to pos2
+// (within the given line width)
+function isOnLineSegment(p, pos1, pos2, line_width) {
+  var r = distance(pos1, pos2);
+  var rmax = xy(r, line_width).r;
+  var d = distanceFromLine(p, pos1, pos2);
+  return d < line_width && distance(pos1, p) < rmax && distance(pos2, p) < rmax
+
+}
