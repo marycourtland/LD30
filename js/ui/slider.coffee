@@ -11,8 +11,8 @@ class bz.Slider extends GameObject
     @graphics.handle_width = 30
     @graphics.handle_length = 20
     @graphics.handle_color = 'black'
-    @graphics.indicator_pos = add(@pos, params.indicator_pos || (if @arm.th is 0 then xy(-50, 0) else xy(0, 50)))
-    @graphics.label_pos = add(@pos, params.label_pos || (if @arm.th is 0 then xy(-50, 0) else xy(0, 50)))
+    @graphics.indicator_pos = add(@pos, params.indicator_pos || (if @arm.th is 0 then xy(-50, 0) else xy(0, 25)))
+    @graphics.label_pos = add(@pos, params.label_pos || (if @arm.th is 0 then xy(-50, 25) else xy(0, 50)))
 
     @scale = # if you want a discrete slider, maybe add a step attribute
       min: params.min || 0
@@ -43,8 +43,9 @@ class bz.Slider extends GameObject
         linewidth: @graphics.handle_width,
         stroke: @graphics.handle_color
 
-      # value indicator
+      # value indicator and label
       draw.text(@ctx, @value.toString(), @graphics.indicator_pos, 'centered')
+      draw.text(@ctx, @label, @graphics.label_pos, 'centered')
 
 
     @on 'drag', (p) ->

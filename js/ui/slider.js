@@ -16,8 +16,8 @@ bz.Slider = (function(_super) {
     this.graphics.handle_width = 30;
     this.graphics.handle_length = 20;
     this.graphics.handle_color = 'black';
-    this.graphics.indicator_pos = add(this.pos, params.indicator_pos || (this.arm.th === 0 ? xy(-50, 0) : xy(0, 50)));
-    this.graphics.label_pos = add(this.pos, params.label_pos || (this.arm.th === 0 ? xy(-50, 0) : xy(0, 50)));
+    this.graphics.indicator_pos = add(this.pos, params.indicator_pos || (this.arm.th === 0 ? xy(-50, 0) : xy(0, 25)));
+    this.graphics.label_pos = add(this.pos, params.label_pos || (this.arm.th === 0 ? xy(-50, 25) : xy(0, 50)));
     this.scale = {
       min: params.min || 0,
       max: params.max || 1000
@@ -41,7 +41,8 @@ bz.Slider = (function(_super) {
         linewidth: this.graphics.handle_width,
         stroke: this.graphics.handle_color
       });
-      return draw.text(this.ctx, this.value.toString(), this.graphics.indicator_pos, 'centered');
+      draw.text(this.ctx, this.value.toString(), this.graphics.indicator_pos, 'centered');
+      return draw.text(this.ctx, this.label, this.graphics.label_pos, 'centered');
     });
     this.on('drag', function(p) {
       this.value = this.getSettingFromPos(p);
