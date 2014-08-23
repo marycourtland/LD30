@@ -31,18 +31,17 @@
     var game = new Game();
     game.setTitle("BLEED ZONE");
     game.setSize(xy(600, 400));
-    game.setFont({type:'Arial', size:12, color:'white'});
+    game.setFont({type:'Coda', size:18, color:'white'});
     window.onload = function() {
-      window.s = new bz.Slider(game, {
-        pos: xy(200, 300),
-        length: 200,
-        orientation: 'v'
-      })
+      bz.initGui();
       game.start();
     }
 
     // The game world (just a namespace for all the big objects)
     var bz = {};
+
+
+
 
 
   </script>
@@ -51,6 +50,7 @@
   <script type="text/javascript" src = "js/world.js"></script>
   <script type="text/javascript" src = "js/wormhole.js"></script>
   <script type="text/javascript" src = "js/ui/slider.js"></script>
+  <script type="text/javascript" src = "js/ui/gui.js"></script>
 
 
 </html>

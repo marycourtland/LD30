@@ -10,11 +10,14 @@ bz.Slider = (function(_super) {
     params || (params = {});
     this.pos = params.pos || xy(100, 100);
     this.arm = rth(params.length || 100, (params.orientation === 'v' ? -Math.PI / 2 : 0));
+    this.label = params.label || "";
     this.graphics.width = 10;
     this.graphics.color = 'silver';
     this.graphics.handle_width = 30;
     this.graphics.handle_length = 20;
     this.graphics.handle_color = 'black';
+    this.graphics.indicator_pos = add(this.pos, params.indicator_pos || (this.arm.th === 0 ? xy(-50, 0) : xy(0, 50)));
+    this.graphics.label_pos = add(this.pos, params.label_pos || (this.arm.th === 0 ? xy(-50, 0) : xy(0, 50)));
     this.scale = {
       min: params.min || 0,
       max: params.max || 1000
@@ -34,15 +37,14 @@ bz.Slider = (function(_super) {
         linewidth: this.graphics.width,
         stroke: this.graphics.color
       });
-      return draw.line(this.ctx, this.draw_params.handle1, this.draw_params.handle2, {
+      draw.line(this.ctx, this.draw_params.handle1, this.draw_params.handle2, {
         linewidth: this.graphics.handle_width,
         stroke: this.graphics.handle_color
       });
+      return draw.text(this.ctx, this.value.toString(), this.graphics.indicator_pos, 'centered');
     });
     this.on('drag', function(p) {
-      if (!!this.contains(this.project(p))) {
-        this.value = this.getSettingFromPos(p);
-      }
+      this.value = this.getSettingFromPos(p);
       return this.recalculate();
     });
     this.on('click', function(p) {
@@ -53,9 +55,11 @@ bz.Slider = (function(_super) {
       return add(this.pos, this.arm);
     };
     this.getSettingFromPos = function(p) {
-      var fraction;
-      fraction = distance(this.pos, this.project(p)) / this.arm.r;
-      return this.scale.min + fraction * (this.scale.max - this.scale.min);
+      var d, proj, s;
+      proj = this.project(p);
+      d = this.arm.th === 0 ? proj.x - this.pos.x : this.pos.y - proj.y;
+      s = this.scale.min + d / this.arm.r * (this.scale.max - this.scale.min);
+      return Math.max(Math.min(s, this.scale.max), this.scale.min);
     };
     this.project = function(p) {
       return xy((this.arm.th === 0 ? p.x : this.pos.x), (this.arm.th === 0 ? this.pos.y : p.y));

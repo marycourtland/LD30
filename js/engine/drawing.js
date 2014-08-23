@@ -92,7 +92,6 @@ var draw = {
     ctx.save();
 
     this.configContext(params);
-    console.log(params)
 
     if (pos != "center") pos = pos.copy();
     

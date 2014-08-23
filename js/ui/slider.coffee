@@ -5,11 +5,14 @@ class bz.Slider extends GameObject
     params ||= {}
     @pos = params.pos || xy(100, 100)
     @arm = rth((params.length || 100), (if params.orientation is 'v' then -Math.PI/2 else 0))
+    @label = params.label || ""
     @graphics.width = 10
     @graphics.color = 'silver'
     @graphics.handle_width = 30
     @graphics.handle_length = 20
     @graphics.handle_color = 'black'
+    @graphics.indicator_pos = add(@pos, params.indicator_pos || (if @arm.th is 0 then xy(-50, 0) else xy(0, 50)))
+    @graphics.label_pos = add(@pos, params.label_pos || (if @arm.th is 0 then xy(-50, 0) else xy(0, 50)))
 
     @scale = # if you want a discrete slider, maybe add a step attribute
       min: params.min || 0
@@ -30,6 +33,7 @@ class bz.Slider extends GameObject
       @draw_params.handle2 = add handle_pos, rth(-@graphics.handle_length/2, @arm.th)
 
     @on 'draw', ->
+      # slider axis
       draw.line @ctx, @pos, @draw_params.endpoint,
         linewidth: @graphics.width,
         stroke: @graphics.color
@@ -39,8 +43,12 @@ class bz.Slider extends GameObject
         linewidth: @graphics.handle_width,
         stroke: @graphics.handle_color
 
+      # value indicator
+      draw.text(@ctx, @value.toString(), @graphics.indicator_pos, 'centered')
+
+
     @on 'drag', (p) ->
-      @value = @getSettingFromPos(p) unless !@contains(@project(p))
+      @value = @getSettingFromPos(p)
       @recalculate()
 
     @on 'click', (p) ->
@@ -51,8 +59,10 @@ class bz.Slider extends GameObject
       add @pos, @arm
 
     @getSettingFromPos = (p) ->
-      fraction = distance(@pos, @project(p)) / @arm.r
-      @scale.min + fraction * (@scale.max - @scale.min)
+      proj = @project(p)
+      d = if (@arm.th is 0) then (proj.x - @pos.x) else (@pos.y - proj.y)
+      s = @scale.min + d/@arm.r * (@scale.max - @scale.min)
+      Math.max(Math.min(s, @scale.max), @scale.min)
 
     @project = (p) ->
       # Project a position onto the axis of this slider
