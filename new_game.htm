@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script type="text/javascript" src = "js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src = "js/lib/preloadjs-0.3.1.min.js"></script>
+    <script type="text/javascript" src = "js/lib/soundjs-NEXT.min.js"></script>
+    <script type="text/javascript" src = "js/lib/underscore-min.js"></script>
+    <script type="text/javascript" src = "js/game.js"></script>
+    <script type="text/javascript" src = "js/math2D.js"></script>
+    <script type="text/javascript" src = "js/drawing.js"></script>
+    <script type="text/javascript" src = "js/colors.js"></script>
+    <script type="text/javascript" src = "js/utility.js"></script>
+    <script type="text/javascript" src = "js/mouse.js"></script>
+    <script type="text/javascript" src = "js/keyboard.js"></script>
+    <script type="text/javascript" src = "js/gameobject.js"></script>
+    <script type="text/javascript" src = "js/object_features/actuate.js"></script>
+    <script type="text/javascript" src = "js/object_features/navigate.js"></script>
+    <script type="text/javascript" src = "js/object_features/cast_as_character.js"></script>
+    <title>New Game</title>
+  </head>
+  
+  <body>
+    <canvas id="game_canvas" style="border:1px solid black; margin-left: 100px !important; background-image:url('images/background.png');"></canvas>
+  </body>
+  
+  <script type="text/javascript">
+    // The game
+    game = new Game();
+    game.setTitle("New game");
+    game.setSize(xy(600, 400));
+    game.setFont({type:'Arial', size:12, color:'white'});
+    window.onload = function() {
+      game.start();
+    }
+    
+    // a turtle
+    turtle = new GameObject(game);
+    turtle.setImage("images/turtle.png", {rotate: true});
+    turtle.placeAt(xy(525, 230));
+    navigate(turtle, keyboard.lrud, 3);
+    castAsCharacter(turtle);
+    
+    
+  </script>
+</html>
