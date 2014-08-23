@@ -12,13 +12,14 @@ var draw = {
   },
 
   doDrawing: function(ctx, params, draw_function) {
+    if (!params) { params = {} }
     ctx.save();
     this.configContext(ctx, params);
     ctx.beginPath();
     draw_function();
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
+    if (!params.doNotClose) { ctx.closePath(); }
+    if (!params.doNotFill) { ctx.fill(); }
+    if (!params.doNotStroke) { ctx.stroke(); }
     ctx.restore();
   },
 
@@ -35,9 +36,11 @@ var draw = {
 
 
   line: function(ctx, p0, p1, params) {
+    // console.log(params.linecap)
     this.doDrawing(ctx, params, function() {
       ctx.moveTo(p0.x, p0.y);
       ctx.lineTo(p1.x, p1.y);
+      ctx.moveTo(p1.x, p1.y);
     })
   },
 
@@ -65,6 +68,13 @@ var draw = {
   circle: function(ctx, center, radius, params) {
     this.doDrawing(ctx, params, function() {
       ctx.arc(center.x, center.y, radius, 0, 2*Math.PI, false);
+    })
+  },
+
+  arc: function(ctx, center, radius, angle1, angle2, params) {
+    params.doNotClose = params.doNotClose || true;
+    this.doDrawing(ctx, params, function() {
+      ctx.arc(center.x, center.y, radius, angle1, angle2, false);
     })
   },
 
